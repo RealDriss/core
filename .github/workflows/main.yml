@@ -2,38 +2,18 @@ on:
   push:
     branches:
       - main
+name: Deploy website on push
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get latest code
+      uses: actions/checkout@v3
 
-
-name: FTP Deploy
-  # You may pin to the exact commit or the version.
-  # uses: SamKirkland/FTP-Deploy-Action@8a24039354ee91000cb948cb4a1dbdf1a1b94a3c
-  uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-  with:
-    # ftp server
-    server: ${{ secrets.ftp_server}}
-    # ftp username
-    username: ${{ secrets.ftp_username}}
-    # ftp password
-    password: ${{ secrets.ftp_password}}
-    # Server port to connect to (read your web hosts docs)
-    port: # optional
-    # protocol to deploy with - ftp, ftps, or ftps-legacy
-    protocol: # optional
-    # Folder to upload from, must end with trailing slash /
-    local-dir: # optional
-    # Path to upload to on the server. Must end with trailing slash /
-    server-dir: # optional
-    # Path and name of the state file - this file is used to track which files have been deployed
-    state-name: # optional
-    # Prints which modifications will be made with current config options, but doesnt actually make any changes
-    dry-run: # optional
-    # Deletes ALL contents of server-dir, even items in excluded with exclude argument
-    dangerous-clean-slate: # optional
-    # An array of glob patterns, these files will not be included in the publish/delete process
-    exclude: # optional
-    # How verbose should the information be - minimal, standard, or verbose
-    log-level: # optional
-    # strict or loose
-    security: # optional
-    # Timeout in milliseconds for FTP operations
-    timeout: # optional
+    - name: Push files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.ftp_server }}
+        username: ${{ secrets.ftp_username }}
+        password: ${{ secrets.ftp_password }}
